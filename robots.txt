@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qutoncash.org/sitemap-index.xml

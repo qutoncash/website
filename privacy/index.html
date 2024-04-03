@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1"><link rel="manifest" href="/site.webmanifest?v=1"><link rel="mask-icon" href="/safari-pinned-tab.svg?v=1" color="#5bbad5"><link rel="shortcut icon" href="/favicon.ico?v=1"><meta name="msapplication-TileColor" content="#da532c"><meta name="theme-color" content="#ffffff"><meta name="generator" content="Astro v4.5.17"><title>Privacy | QuTON Cash (QTC)</title><link rel="canonical" href="https://qutoncash.org/privacy/"><meta name="description" content="With QuTON Cash (QTC), you get empowering features that make sending and receiving money as easy as sending a text message."><meta name="robots" content="index, follow"><meta property="og:title" content="QuTON Cash (QTC)"><meta property="og:type" content="website"><meta property="og:image" content="https://qutoncash.org/opengraph.png?v=6"><meta property="og:url" content="https://qutoncash.org/privacy/"><meta property="og:image:url" content="https://qutoncash.org/opengraph.png?v=6"><meta property="og:image:alt" content="QuTON Cash (QTC) Logo"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="https://qutoncash.org/privacy/"><meta name="twitter:title" content="QuTON Cash (QTC)"><meta name="twitter:image" content="https://qutoncash.org/opengraph.png?v=6"><meta name="twitter:description" content="With QuTON Cash (QTC), you get empowering features that make sending and receiving money as easy as sending a text message."><link rel="stylesheet" href="/_astro/index.BwSP7x4A.css"></head><body class="bg-white dark:bg-black"><header><div class="max-w-screen-xl mx-auto px-5"><div class="flex flex-col lg:flex-row justify-between items-center my-5"><div class="flex w-full lg:w-auto items-center justify-between"><a href="/" class="flex items-center gap-2 !no-underline"><img src="/_astro/logo_no_text.BUTAlDCJ_1wNWfT.svg" alt="Qu* Ecosystem" loading="eager" width="32" height="32" decoding="async"></a><div class="block hidden"><button id="astronav-menu" aria-label="Toggle Menu"><svg fill="currentColor" class="w-4 h-4 text-gray-800" width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><title>Toggle Menu</title><path class="astronav-close-icon astronav-toggle hidden" fill-rule="evenodd" clip-rule="evenodd" d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"></path><path class="astronav-open-icon astronav-toggle" fill-rule="evenodd" d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"></path></svg></button></div></div><nav class="astronav-items astronav-toggle hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0"><ul class="flex flex-col lg:flex-row lg:gap-3"></ul></nav><script>(function(){const closeOnClick = false;
+
+["DOMContentLoaded", "astro:after-swap"].forEach((event) => {
+  document.addEventListener(event, addListeners);
+});
+
+// Function to clone and replace elements
+function cloneAndReplace(element) {
+  const clone = element.cloneNode(true);
+  element.parentNode.replaceChild(clone, element);
+}
+
+function addListeners() {
+  // Clean up existing listeners
+  const oldMenuButton = document.getElementById("astronav-menu");
+  if (oldMenuButton) {
+    cloneAndReplace(oldMenuButton);
+  }
+
+  const oldDropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  oldDropdownMenus.forEach((menu) => {
+    cloneAndReplace(menu);
+  });
+
+  // Mobile nav toggle
+  const menuButton = document.getElementById("astronav-menu");
+  menuButton && menuButton.addEventListener("click", toggleMobileNav);
+
+  // Dropdown menus
+  const dropdownMenus = document.querySelectorAll(".astronav-dropdown");
+  dropdownMenus.forEach((menu) => {
+    const button = menu.querySelector("button");
+    button &&
+      button.addEventListener("click", (event) =>
+        toggleDropdownMenu(event, menu, dropdownMenus)
+      );
+
+    // Handle Submenu Dropdowns
+    const dropDownSubmenus = menu.querySelectorAll(
+      ".astronav-dropdown-submenu"
+    );
+
+    dropDownSubmenus.forEach((submenu) => {
+      const submenuButton = submenu.querySelector("button");
+      submenuButton &&
+        submenuButton.addEventListener("click", (event) => {
+          event.stopImmediatePropagation();
+          toggleSubmenuDropdown(event, submenu);
+        });
+    });
+  });
+
+  // Clicking away from dropdown will remove the dropdown class
+  document.addEventListener("click", closeAllDropdowns);
+
+  if (closeOnClick) {
+    handleCloseOnClick();
+  }
+}
+
+function toggleMobileNav() {
+  [...document.querySelectorAll(".astronav-toggle")].forEach((el) => {
+    el.classList.toggle("hidden");
+  });
+}
+
+function toggleDropdownMenu(event, menu, dropdownMenus) {
+  toggleMenu(menu);
+
+  // Close one dropdown when selecting another
+  Array.from(dropdownMenus)
+    .filter((el) => el !== menu && !menu.contains(el))
+    .forEach(closeMenu);
+
+  event.stopPropagation();
+}
+
+function toggleSubmenuDropdown(event, submenu) {
+  event.stopPropagation();
+  toggleMenu(submenu);
+
+  // Close sibling submenus at the same nesting level
+  const siblingSubmenus = submenu
+    .closest(".astronav-dropdown")
+    .querySelectorAll(".astronav-dropdown-submenu");
+  Array.from(siblingSubmenus)
+    .filter((el) => el !== submenu && !submenu.contains(el))
+    .forEach(closeMenu);
+}
+
+function closeAllDropdowns(event) {
+  const dropdownMenus = document.querySelectorAll(".dropdown-toggle");
+  const dropdownParent = document.querySelectorAll(
+    ".astronav-dropdown, .astronav-dropdown-submenu"
+  );
+  const isButtonInsideDropdown = [
+    ...document.querySelectorAll(
+      ".astronav-dropdown button, .astronav-dropdown-submenu button, #astronav-menu"
+    ),
+  ].some((button) => button.contains(event.target));
+  if (!isButtonInsideDropdown) {
+    dropdownMenus.forEach((d) => {
+      // console.log("I ran", d);
+      // if (!d.contains(event.target)) {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.classList.add("hidden");
+      // }
+    });
+    dropdownParent.forEach((d) => {
+      d.classList.remove("open");
+      d.removeAttribute("open");
+      d.setAttribute("aria-expanded", "false");
+    });
+  }
+}
+
+function toggleMenu(menu) {
+  menu.classList.toggle("open");
+  const expanded = menu.getAttribute("aria-expanded") === "true";
+  menu.setAttribute("aria-expanded", expanded ? "false" : "true");
+  menu.hasAttribute("open")
+    ? menu.removeAttribute("open")
+    : menu.setAttribute("open", "");
+
+  const dropdownToggle = menu.querySelector(".dropdown-toggle");
+  const dropdownExpanded = dropdownToggle.getAttribute("aria-expanded");
+  dropdownToggle.classList.toggle("hidden");
+  dropdownToggle.setAttribute(
+    "aria-expanded",
+    dropdownExpanded === "true" ? "false" : "true"
+  );
+}
+
+function closeMenu(menu) {
+  // console.log("closing", menu);
+  menu.classList.remove("open");
+  menu.removeAttribute("open");
+  menu.setAttribute("aria-expanded", "false");
+  const dropdownToggles = menu.querySelectorAll(".dropdown-toggle");
+  dropdownToggles.forEach((toggle) => {
+    toggle.classList.add("hidden");
+    toggle.setAttribute("aria-expanded", "false");
+  });
+}
+
+function handleCloseOnClick() {
+  const navMenuItems = document.querySelector(".astronav-items");
+  const navToggle = document.getElementById("astronav-menu");
+  const navLink = navMenuItems && navMenuItems.querySelectorAll("a");
+
+  const MenuIcons = navToggle.querySelectorAll(".astronav-toggle");
+
+  navLink &&
+    navLink.forEach((item) => {
+      item.addEventListener("click", () => {
+        navMenuItems?.classList.add("hidden");
+        MenuIcons.forEach((el) => {
+          el.classList.toggle("hidden");
+        });
+      });
+    });
+}
+})();</script><div><div class="hidden lg:flex items-center gap-4"></div><div id="ton-connect"></div></div></div></div></header><div class="max-w-screen-xl mx-auto px-5"><h1 class="text-3xl font-bold">QuTON Cash Privacy Policy</h1><p class="mt-4">
+QuTON Cash (QTC) is a privacy-focused cryptocurrency that allows users to send and receive payments without revealing their identity. QTC transactions are recorded on a public blockchain, but the sender and receiver addresses are not linked to any personally identifiable information.
+</p><h2 class="text-2xl font-bold mt-8" id="what-information-do-we-collect">What information do we collect?</h2><p class="mt-4">
+We do not collect any personally identifiable information from our users. The only information we collect is the data that is necessary to process your transactions. This data includes:
+</p><ul class="list-disc ml-4 mt-4"><li>The sender and receiver addresses</li><li>The amount of QTC being sent</li><li>The timestamp of the transaction</li></ul><h2 class="text-2xl font-bold mt-8" id="how-do-we-use-your-information">How do we use your information?</h2><p class="mt-4">
+We use the information we collect to process your transactions and to improve our services. We do not share your information with any third parties, except as required by law.
+</p><h2 class="text-2xl font-bold mt-8" id="your-rights">Your rights</h2><p class="mt-4">
+You have the right to access your personal data, to correct any errors in your data, and to request that your data be deleted. You can exercise these rights by contacting us
+</p><h2 class="text-2xl font-bold mt-8" id="changes-to-this-privacy-policy">Changes to this Privacy Policy</h2><p class="mt-4">
+We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on our website.
+</p><h2 class="text-2xl font-bold mt-8" id="contact-us">Contact us</h2><p class="mt-4">
+If you have any questions about this Privacy Policy, please contact us
+</p></div><footer class="py-14"><div class="max-w-screen-xl mx-auto px-5"><div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8"><div class="sm:col-span-2 md:col-span-3 lg:col-span-2"><a href="/" class="text-lg flex items-center dark:text-white"><span class="font-bold">QuTON Cash (QTC)</span> </a><sub class="tagline dark:text-white">
+Peer-to-peer electronic cash alternative to TON
+</sub><p class="mt-4 text-sm text-slate-700 max-w-xs dark:text-white">
+With QuTON Cash (QTC), you get empowering features that make sending and receiving money as easy as sending a text message.
+</p><div class="flex gap-3 mt-4 items-center"></div></div><div></div><div></div><div><h3 class="font-medium text-sm text-slate-800" id="external-links">External links</h3><div class="flex flex-col mt-3"><a target="_blank" href="https://ton.app/jettons/EQASQ2ktb4g73e7XnO3d29ewL05o064KdL-ziH7RoQ_hWko7" class="py-2 text-sm text-slate-600 hover:text-indigo-600 dark:text-white dark:hover:text-gray-300">
+TON App
+</a><a target="_blank" href="https://tonviewer.com/EQASQ2ktb4g73e7XnO3d29ewL05o064KdL-ziH7RoQ_hWko7?section=jetton" class="py-2 text-sm text-slate-600 hover:text-indigo-600 dark:text-white dark:hover:text-gray-300">
+Tonviewer
+</a><a target="_blank" href="https://www.geckoterminal.com/ton/pools/EQBJThkA_oXoS0ptUTkrPS2ZsDDKTaBuAdMqJQ3LZAuqGR3I" class="py-2 text-sm text-slate-600 hover:text-indigo-600 dark:text-white dark:hover:text-gray-300">
+GeckoTerminal (STON.fi)
+</a><a target="_blank" href="https://www.geckoterminal.com/ton/pools/EQCJizZ14ZqmoVLa7cGuAhMlSOfXTRIUde858OOzcwsaubVD" class="py-2 text-sm text-slate-600 hover:text-indigo-600 dark:text-white dark:hover:text-gray-300">
+GeckoTerminal (DeDust.io)
+</a><a href="https://github.com/qutoncash" class="py-2 text-sm text-slate-600 hover:text-indigo-600 dark:text-white dark:hover:text-gray-300">
+GitHub
+</a></div></div></div></div><div class="mt-5 pt-8 px-5 border-t border-slate-200"><div class="max-w-screen-xl mx-auto px-5"><p class="text-center text-sm text-slate-600 [text-wrap:balance] dark:text-white">
+Copyright © 2024 Quasterisk (Qu*) Org. All rights reserved.
+</p><p class="text-center text-xs text-slate-600 mt-2 dark:text-white"><a href="/terms" class="hover:text-black dark:hover:text-gray-300">Terms</a> ・ <a href="/privacy" class="hover:text-black dark:hover:text-gray-300">Privacy</a></p></div></div></footer><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-87QR3YHYTT"></script><script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script><script>
+window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-87QR3YHYTT');
+
+      const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+          manifestUrl: 'https://qutoncash.org/tonconnect-manifest.json',
+          buttonRootId: 'ton-connect'
+      });
+      
+      // tonConnectUI.uiOptions = {
+      //   twaReturnUrl: 'https://t.me/YOUR_APP_NAME'
+      // };
+</script></body></html>
